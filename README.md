@@ -13,9 +13,9 @@ A custom inline AC power monitor board using a Teensy 4.0 to measure current and
    - Optional voltage divider + isolation amp for voltage sampling.
    - Isolated low-voltage power supply for MCU and sensors.
 3. **Firmware**
-   - Sample current (and voltage if present) at >2 kHz.
-   - RMS, real power, power factor, energy accumulation.
-   - Calibration routines and storage in MCU EEPROM/flash.
+   - Sample the hall sensor output at ≥4 kHz to capture 60 Hz signals with headroom.
+   - Compute calibrated RMS current and optionally multiply with sampled voltage for real power.
+   - Maintain rolling energy total and store calibration offsets in Teensy EEPROM.
 4. **PCB**
    - Clear isolation barriers between mains and low-voltage.
    - High voltage spacing and fuse/EMI protection.
@@ -24,9 +24,8 @@ A custom inline AC power monitor board using a Teensy 4.0 to measure current and
    - Safety considerations, build notes, calibration steps.
 
 ## Recommended Hardware Peripherals
-**Current sensing (choose one):**
-- **Current transformer (CT)**: Non-invasive and isolated. Example: 100 A:50 mA CT + burden resistor to produce ~1V RMS at max load.
-- **Hall effect sensor (inline)**: Isolated and simpler low-side. Example: Allegro ACS712/ACS758 (choose based on current range).
+**Assumptions**: worst-case load 10 A, single-phase household 60 Hz, inline monitoring.
+**Current sensing (Hall effect)**: direct inline sensor rated for ±10 A (e.g., Allegro ACS712-05B for ±5 A, ACS70331 for ±10 A). Offset the output at mid-rail, add low-pass filtering, and employ the Teensy 4.0 ADC or a higher-resolution external ADC for RMS accuracy.
 
 **Voltage sensing (optional for real power):**
 - Resistive divider + isolation amplifier (e.g., AMC1100/AMC1200) into MCU ADC.
@@ -53,6 +52,12 @@ A custom inline AC power monitor board using a Teensy 4.0 to measure current and
 - `firmware/` MCU firmware source
 - `pcb/` PCB design files
 - `docs/` Design and safety documentation
+
+## Next Work Items
+1. Expand `docs/safety.md` with inline mains precautions and measurement caveats.
+2. Fill `docs/calibration.md` with ADC scaling and hall sensor offset procedures.
+3. Drop starter firmware in `firmware/teensy-current.c` plus utility headers.
+4. Add empty `pcb/schematic.md` placeholder for the future schematic narrative.
 
 ## Safety Note
 Working with mains voltage is hazardous. If you are not experienced with high-voltage design, use isolation transformers and follow local electrical codes. Consider using an off-the-shelf enclosure and certified power entry module.
