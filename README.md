@@ -56,7 +56,7 @@ A custom inline AC power monitor board using a Teensy 4.0 to measure current and
 ## Next Work Items
 1. Expand `docs/safety.md` with inline mains precautions and measurement caveats.
 2. Fill `docs/calibration.md` with ADC scaling and hall sensor offset procedures.
-3. Drop starter firmware in `firmware/teensy-current.c` plus utility headers.
+3. Drop starter firmware in `firmware/teensy_current.ino` plus utility headers.
 4. Add empty `pcb/schematic.md` placeholder for the future schematic narrative.
 
 ## Safety Note
